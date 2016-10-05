@@ -43,10 +43,10 @@ def comment(inputFile, videoOrAudio, info):
 
         script = '''
                 TELL APPLICATION \"FINDER\"
-                SET filePath TO \"Macintosh HD:Users:kuntat:Desktop:Paprika.mp4\"
-                SET COMMENT OF (filePath AS ALIAS) TO \"%s\"
+                SET filePath TO POSIX PATH OF \"{}\" as POSIX file
+                SET COMMENT OF (filePath AS ALIAS) TO \"{}\"
                 END TELL
-                ''' %stdout.rstrip()
+                '''.format(inputFile.rstrip(),stdout.rstrip())
 
         p = Popen(['osascript', '-'],stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = p.communicate(script)
