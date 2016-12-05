@@ -26,20 +26,19 @@ def main():
                 comment(inputFile, videoOrAudio, info)
         print "Done!"
 
-
+##does videoOrAudio still need to be string?
 def comment(inputFile, videoOrAudio, info):        
-        if videoOrAudio == "0":
+        if videoOrAudio == 0:
                 selectStreams = 'v:0'
         else:
                 selectStreams = 'a:0'
 
         stream = 'stream=%s'%info
 
-        p = Popen(['/Users/kuntat/Desktop/ffprobe', '-v', 'error', '-select_streams', selectStreams,
+        p = Popen(['/usr/local/Cellar/ffmpeg/3.0.2/bin/ffprobe', '-v', 'error', '-select_streams', selectStreams,
                    '-show_entries', stream, '-of', 'default=noprint_wrappers=1:nokey=1',
                    inputFile],stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = p.communicate()
-        result = stdout.rstrip()
 
         script = '''
                 TELL APPLICATION \"FINDER\"
@@ -50,7 +49,7 @@ def comment(inputFile, videoOrAudio, info):
 
         p = Popen(['osascript', '-'],stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = p.communicate(script)
-        print(p.returncode, stdout, stderr)
+        print(p.returncode, stdout.rstrip(), stderr.rstrip())
 
 if __name__ == '__main__':
         main()
